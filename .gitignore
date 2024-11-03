@@ -1,3 +1,6 @@
 .vscode/
 binaries/
 objects/
+
+# For MacOS local reposistories
+.DS_Store
