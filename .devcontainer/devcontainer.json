@@ -1,5 +1,6 @@
 {
     "name": "Environnement de développement C",
     "build": { "dockerfile": "Dockerfile" },
-    "workspaceMount": "source=${localWorkspaceFolder}, target=/workspace, type=bin"
+    "workspaceFolder": "/workspace",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind"
 }

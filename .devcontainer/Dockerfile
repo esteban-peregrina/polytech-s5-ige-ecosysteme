@@ -5,15 +5,15 @@ FROM ubuntu:24.04
 
 # Define running arguments
 ARG USERNAME=esteban
+ARG USER_ID=1001
 ARG GROUPNAME=$USERNAME
-ARG USER_UID=1000
-ARG USER_GID=$USER_UID
+ARG GROUP_ID=$USER_ID
 
 # Create a non-root user, a hidden "config" directory, and configure its permission (because we're currently building as root)
-RUN groupadd --gid $USER_GID $GROUPNAME \
-    && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
+RUN groupadd --gid $GROUP_ID $GROUPNAME \
+    && useradd -s /bin/bash --uid $USER_ID --gid $GROUP_ID -m $USERNAME \
     && mkdir /home/$USERNAME/.config \
-    && chown $USER_UID:$USER_GID /home/$USERNAME/.config
+    && chown $USER_ID:$GROUP_ID /home/$USERNAME/.config
 
 # Install necessary packages at build
 RUN apt-get update \
@@ -30,16 +30,13 @@ USER $USERNAME
 
 # === CURRENT BUILDING USER IS NOW $USERNAME === #
 
-# Change current working directory to workspace 
+# Change current working directory to workspace (creates it)
 WORKDIR /workspace
 
-# Mount all files of the build context inside the current working directory (excluding the ones in .dockerignore)
-COPY . .
+# Include .bashrc to configure Bash
+COPY .bashrc /home/$USERNAME/.bashrc
 
-# Move mounted .bashrc to configure Bash
-RUN mv .bashrc /home/$USERNAME/.bashrc
-
-# Configure entrypoint to run at start of the container
+# Include and configure entrypoint to run at start of the container
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT [ "/bin/bash", "/entrypoint.sh" ]
 
