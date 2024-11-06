@@ -2,5 +2,5 @@
 binaries/
 objects/
 
-# For MacOS local reposistories
+# For MacOS local repositories
 .DS_Store
