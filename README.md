@@ -10,6 +10,7 @@ Sur Window, il est nécessaire d'installer [Winget](https://learn.microsoft.com/
 
 ## MacOS
 Sur MacOS, il est nécessaire d'installer [Homebrew](https://brew.sh) pour utiliser le script de configuration.
+Vous pouvez aussi utiliser ```/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)```
 
 ## Linux
 Sur les distributions Linux usuelles, le script de configuration peut être lancé sans installation préalable.
