@@ -22,7 +22,10 @@ Naviguez jusqu'au fichier de configuration, puis éxécutez-le avec :
 ```powershell
 .\windows.ps1
 ```
-L'installation est terminée.
+Une fois les installations terminées, jouez (remplacez `Restricted` par la valeur notée précédemment) :
+```powershell
+Set-ExecutionPolicy Restricted
+```
 ## MacOS
 Sur MacOS, il est nécessaire d'installer [Homebrew](https://brew.sh) pour utiliser le script de configuration.
 Vous pouvez aussi utiliser 
