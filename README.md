@@ -9,8 +9,8 @@ Téléchargez le fichier de configuration approprié directement depuis GitHub.c
 
 ## Windows
 Sur Windows, il est nécessaire d'installer [Winget](https://learn.microsoft.com/fr-fr/windows/package-manager/winget/) pour utiliser le script de configuration.
-Aujourd'hui, ce gestionnaire de paquets est installé automatiquement avec le Programme d'installation d'Applications, lui-même installé avec les dernières versions de Windows.
-Une fois le script `windows.ps1` installé, **éxécutez Powershell en tant qu'administrateur**, puis jouez :
+Aujourd'hui, ce gestionnaire de paquets est installé automatiquement avec le *Programme d'installation d'Applications*, lui-même installé avec les dernières versions de Windows.
+Une fois le script `windows.ps1` téléchargé, **éxécutez Powershell en tant qu'administrateur**, puis jouez :
 ```powershell
 Get-ExecutionPolicy
 ```
@@ -18,7 +18,7 @@ Notez la valeur renvoyez, puis jouez :
 ```powershell
 Set-ExecutionPolicy Unrestricted
 ```
-Naviguez jusqu'au fichier de configuration, puis éxécutez-le avec :
+Naviguez jusqu'au fichier de configuration, puis exécutez-le avec :
 ```powershell
 .\windows.ps1
 ```
