@@ -1,5 +1,6 @@
 ### Exclude files from build context ###
 
-.git
 .vscode
+
+# Specifique MacOS
 .DS_Store
