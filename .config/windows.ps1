@@ -1,7 +1,18 @@
+# Check if running as administrator
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    # Relaunch the script as administrator
+    Write-Host "Restarting script as administrator..."
+    Start-Process PowerShell -ArgumentList "-ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+    exit
+}
+
 # Check if winget is available
 if (!(Get-Command winget -ErrorAction SilentlyContinue)) {
     Write-Host "Winget is not installed. Please ensure you have the Windows Package Manager installed to use this script."
     exit
+} else {
+    Write-Host "Winget is installed. Checking for updates..."
+    winget upgrade --id Microsoft.DesktopAppInstaller -e --source winget
 }
 
 # Install Git

@@ -5,12 +5,30 @@ Docker sera utilisé pour modifier et executer le code dans un environnement con
 et Visual Studio Code, qui en plus de disposer d'extensions pour integrer Git / Github, 
 permettra de se connecter au conteneur de développement Docker.
 
-## Windows
-Sur Window, il est nécessaire d'installer [Winget](https://learn.microsoft.com/fr-fr/windows/package-manager/winget/) pour utiliser le script de configuration.
+Téléchargez le fichier de configuration approprié directement depuis GitHub.com, et suivez les instructions ci-dessous.
 
+## Windows
+Sur Windows, il est nécessaire d'installer [Winget](https://learn.microsoft.com/fr-fr/windows/package-manager/winget/) pour utiliser le script de configuration.
+Aujourd'hui, ce gestionnaire de paquets est installé automatiquement avec le Programme d'installation d'Applications, lui-même installé avec les dernières versions de Windows.
+Une fois le script `windows.ps1` installé, **éxécutez Powershell en tant qu'administrateur**, puis jouez :
+```powershell
+Get-ExecutionPolicy
+```
+Notez la valeur renvoyez, puis jouez :
+```powershell
+Set-ExecutionPolicy Unrestricted
+```
+Naviguez jusqu'au fichier de configuration, puis éxécutez-le avec :
+```powershell
+.\windows.ps1
+```
+L'installation est terminée.
 ## MacOS
 Sur MacOS, il est nécessaire d'installer [Homebrew](https://brew.sh) pour utiliser le script de configuration.
-Vous pouvez aussi utiliser ```/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)```
+Vous pouvez aussi utiliser 
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)
+```
 
 ## Linux
 Sur les distributions Linux usuelles, le script de configuration peut être lancé sans installation préalable.
