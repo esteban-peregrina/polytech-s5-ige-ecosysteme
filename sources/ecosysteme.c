@@ -89,11 +89,11 @@ void actualiserEcosysteme(lieu Ecosysteme[TAILLE][TAILLE]) {
     */
 
     int indicateurVie = 1;
+    int compteur = 0;
     while(indicateurVie) {
         // Pour chaque lieu de l'ecosysteme, calcul les décès et les naissances en fonction de sa faune locale.
         indicateurVie = 0;
-        time_t currentTime;
-        printf("\nUpdate %ld :\n\n", time(&currentTime));
+        printf("\nUpdate %d :\n\n", compteur);
         afficherEcosysteme(Ecosysteme);
         for (int x = 0; x < TAILLE; x++) {
             for (int y = 0; y < TAILLE; y++) {
@@ -110,6 +110,7 @@ void actualiserEcosysteme(lieu Ecosysteme[TAILLE][TAILLE]) {
             }
         }
         usleep(PERIOD);
+        compteur++;
     }
 
     printf("Tout le monde est mort !\n");
