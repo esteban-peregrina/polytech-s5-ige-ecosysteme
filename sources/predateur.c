@@ -55,7 +55,7 @@ proie* predateurChasseProie(predateur* self, proie* victime) {
     if (random_value < self->appetit) { // Succès de la chasse
         self->base.energie += victime->base.energie;
         proie* temp = (proie*)victime->base.suivant;
-        proie_destroy(victime);
+        proie_destroy((proie**)&victime);
         return temp;
     } else { // Echec de la chasse
         self->base.depenseEnergie((animal*)self); 
