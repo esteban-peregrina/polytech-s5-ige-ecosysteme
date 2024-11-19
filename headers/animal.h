@@ -17,7 +17,7 @@
 
 typedef struct animal animal;
 struct animal {
-    int typeID;                                 // Voir defines
+    int typeID;                                 // Type d'animal (Voir defines)
     char forme;                                 // Caractère affiché pour représenter l'animal
 
     int energie;                                // Energie de départ
@@ -27,7 +27,7 @@ struct animal {
     double fertilite;                           // Probabilité de se reproduire (p_reproduce)
     //animal* (*accouplementAnimal)(animal* pere, animal* mere, animal* teteFauneLocale);
 
-    int direction;                              // Voir defines
+    int direction;                              // Direction suivie (Voir defines)
     double assurance;                           // Probabilité de changer de direction (p_ch_dir)
     void (*changeDirection)(animal* self);
     int aMigre;                                 // Booleen

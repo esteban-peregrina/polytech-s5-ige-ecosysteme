@@ -11,23 +11,51 @@
 #include <time.h>
 #include <unistd.h>
 
-#define DEBUGGING 1
-
-
 void peupleEcosysteme(lieu Ecosysteme[TAILLE][TAILLE]) {
     /*
     Peuple un ecosystème aléatoirement.
     */
-    int expression = -1;
-    //expression = DEBUGGING; // Commenter en utilisation normale
-    switch (expression)
+    int repartition = REPARTITION;
+    switch (repartition)
     {
     case 1:
         for (int x = 0; x < TAILLE; x++) {
             for (int y = 0; y < TAILLE; y++) {
                 for (int espece = 0; espece < NOMBRE_ESPECES; espece++) {
                     Ecosysteme[x][y].tetesFaunesLocales[espece] = NULL;
-                    if (x == 0 && y == 0) {
+                    if (x == 0 && y == 0) { // Apparaissent au même endroit
+                        Ecosysteme[x][y].tetesFaunesLocales[espece] = ajouteAnimalFauneLocale(espece, Ecosysteme[x][y].tetesFaunesLocales[espece]);
+                    }
+                }
+            }
+        }
+        break;
+    
+    case 2:
+        for (int x = 0; x < TAILLE; x++) {
+            for (int y = 0; y < TAILLE; y++) {
+                for (int espece = 0; espece < NOMBRE_ESPECES; espece++) {
+                    Ecosysteme[x][y].tetesFaunesLocales[espece] = NULL;
+                    if (espece == ANIMAL_TYPE_PROIE && x == 0 && y == 0) { // Proie en haut a gauche
+                        Ecosysteme[x][y].tetesFaunesLocales[espece] = ajouteAnimalFauneLocale(espece, Ecosysteme[x][y].tetesFaunesLocales[espece]);
+                    }
+                    if (espece == ANIMAL_TYPE_PREDATEUR && x == TAILLE-1 && y == TAILLE-1) { // Predateur en bas à droite
+                        Ecosysteme[x][y].tetesFaunesLocales[espece] = ajouteAnimalFauneLocale(espece, Ecosysteme[x][y].tetesFaunesLocales[espece]);
+                    }
+                }
+            }
+        }
+        break;
+
+    case 3:
+        for (int x = 0; x < TAILLE; x++) {
+            for (int y = 0; y < TAILLE; y++) {
+                for (int espece = 0; espece < NOMBRE_ESPECES; espece++) {
+                    Ecosysteme[x][y].tetesFaunesLocales[espece] = NULL;
+                    if ((espece == ANIMAL_TYPE_PROIE) && ((x != TAILLE-1) || (y != TAILLE-1))) { // Proie partout sauf en bas à droite
+                        Ecosysteme[x][y].tetesFaunesLocales[espece] = ajouteAnimalFauneLocale(espece, Ecosysteme[x][y].tetesFaunesLocales[espece]);
+                    }
+                    if (espece == ANIMAL_TYPE_PREDATEUR && x == TAILLE-1 && y == TAILLE-1) { // Predateur en bas à droite
                         Ecosysteme[x][y].tetesFaunesLocales[espece] = ajouteAnimalFauneLocale(espece, Ecosysteme[x][y].tetesFaunesLocales[espece]);
                     }
                 }
@@ -133,23 +161,73 @@ void actualiserEcosysteme(lieu Ecosysteme[TAILLE][TAILLE]) {
     printf("Tout le monde est mort !\n");
 }
 
-void afficherEcosysteme(lieu Ecosysteme[TAILLE][TAILLE]) { 
-    /*
-    Affiche l'ecosysteme.
-    */
+void afficherEcosysteme(lieu Ecosysteme[TAILLE][TAILLE]) {
+    const int CELL_WIDTH = 8;  
+    const int CELL_HEIGHT = 3;
 
-   for (int x = 0; x < TAILLE; x++) {
+    printf("Écosystème :\n");
+
+    // Pour chaque ligne de l'écosystème
+    for (int x = 0; x < TAILLE; x++) {
+        // Ligne de séparation supérieure
         for (int y = 0; y < TAILLE; y++) {
-            for (int espece = 0; espece < NOMBRE_ESPECES; espece++) {
-                animal* courant = Ecosysteme[x][y].tetesFaunesLocales[espece];
-                if (courant == NULL) { printf("-"); }
-                while (courant != NULL) {
-                    printf("%c", courant->forme);
-                    courant = courant->suivant;
-                }
+            printf("+");
+            for (int i = 0; i < CELL_WIDTH; i++) {
+                printf("-");
             }
-            printf("\t\t\t");
         }
-        printf("\n");
+        printf("+\n");
+
+        // Affichage des animaux dans la case
+        for (int row = 0; row < CELL_HEIGHT; row++) { // 3 lignes par case
+            for (int y = 0; y < TAILLE; y++) {
+                printf("|");
+
+                // Créer un tableau pour stocker les animaux
+                char contenuCellule[CELL_HEIGHT][CELL_WIDTH + 1]; 
+                // Initialiser tout à vide
+                for (int i = 0; i < CELL_HEIGHT; i++) {
+                    for (int j = 0; j < CELL_WIDTH; j++) {
+                        contenuCellule[i][j] = ' ';
+                    }
+                    contenuCellule[i][CELL_WIDTH] = '\0';
+                }
+
+                // Extraire les formes des animaux
+                int index = 0;
+                int k = 0;
+                for (int espece = 0; espece < NOMBRE_ESPECES; espece++) {
+                    animal* courant = Ecosysteme[x][y].tetesFaunesLocales[espece];
+                    while (courant != NULL) {
+                        // Si la ligne est pleine, on passe à la ligne suivante
+                        if (index >= CELL_WIDTH) {
+                            index = 0;
+                            k++;
+                        }
+                        // Si on dépasse le nombre de lignes, on s'arrête
+                        if (k >= CELL_HEIGHT) break;
+
+                        contenuCellule[k][index++] = courant->forme;
+                        courant = courant->suivant;
+                    }
+                }
+
+                // Afficher la ligne de la cellule
+                printf("%-*s", CELL_WIDTH, contenuCellule[row]); // Affichage de la ligne d'animaux
+            }
+            printf("|\n");
+        }
     }
+
+    // Dernière ligne de séparation inférieure
+    for (int y = 0; y < TAILLE; y++) {
+        printf("+");
+        for (int i = 0; i < CELL_WIDTH; i++) {
+            printf("-");
+        }
+    }
+    printf("+\n");
 }
+
+
+

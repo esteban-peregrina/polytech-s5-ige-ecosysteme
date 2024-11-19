@@ -1,10 +1,12 @@
 #ifndef ECOSYSTEME_H
 #define ECOSYSTEME_H
 
-#define TAILLE 9
+#define TAILLE 10
 #define PERIOD 1000000
 #define BASEPOPULATIONMAX 10
 #define p_predateur 0.4
+
+#define REPARTITION 3
 
 void peupleEcosysteme(lieu Ecosysteme[TAILLE][TAILLE]); // Renvoie un ecosysteme de départ généré aléatoirement
 
