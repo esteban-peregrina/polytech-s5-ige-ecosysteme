@@ -13,7 +13,7 @@ animal* animal_create() {
     animal* Animal = NULL;
     Animal = malloc(sizeof(animal)); // Si on déréférence le pinteur Animal avec *Animal, on aurait sizeof(NULL) (Corriger les exercices précédents !)
     if (Animal == NULL) { exit(EXIT_FAILURE); }
-
+    
     Animal->energie = ENERGIE;
     Animal->depenseEnergie = depenseEnergieAnimal;
 

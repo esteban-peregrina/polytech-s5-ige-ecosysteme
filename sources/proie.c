@@ -17,7 +17,7 @@ proie* proie_create() {
 
     Proie->base = *animal_create(); // On déréférence l'animal résultant, qui possède déjà une énergie.
     
-    Proie->base.type = '*';
+    Proie->base.typeID = ANIMAL_TYPE_PROIE;
 
     Proie->base.metabolisme = d_energie_proie;
 

@@ -19,19 +19,16 @@ void peupleEcosysteme(lieu Ecosysteme[TAILLE][TAILLE]) {
     
     for (int x = 0; x < TAILLE; x++) {
         for (int y = 0; y < TAILLE; y++) {
-            Ecosysteme[x][y].nbProies = 0;
-            Ecosysteme[x][y].nbPredateurs = 0;
-            Ecosysteme[x][y].teteFauneLocale = NULL;
-
+            for (int espece = 0; espece < NOMBRE_ESPECES; espece++) {
+                Ecosysteme[x][y].tetesFaunesLocales[espece] = NULL;
+            }
             int population = rand()%BASEPOPULATIONMAX;
             for (int i = 0; i < population; i++) {
                 float random_value = (float)rand() / RAND_MAX;
                 if (random_value <= p_predateur) { // Prédateur
-                    Ecosysteme[x][y].teteFauneLocale = ajouteAnimalFauneLocale('O', Ecosysteme[x][y].teteFauneLocale);
-                    Ecosysteme[x][y].nbPredateurs++;
+                    Ecosysteme[x][y].tetesFaunesLocales[1] = ajouteAnimalFauneLocale('O', Ecosysteme[x][y].tetesFaunesLocales);
                 } else { // Proie
-                    Ecosysteme[x][y].teteFauneLocale = ajouteAnimalFauneLocale('*', Ecosysteme[x][y].teteFauneLocale);
-                    Ecosysteme[x][y].nbProies++;
+                    Ecosysteme[x][y].tetesFaunesLocales[0] = ajouteAnimalFauneLocale('*', Ecosysteme[x][y].tetesFaunesLocales);
                 }
             }
         }
@@ -97,7 +94,9 @@ void actualiserEcosysteme(lieu Ecosysteme[TAILLE][TAILLE]) {
         afficherEcosysteme(Ecosysteme);
         for (int x = 0; x < TAILLE; x++) {
             for (int y = 0; y < TAILLE; y++) {
-                if (Ecosysteme[x][y].teteFauneLocale != NULL) { indicateurVie = 1; }
+                for (int espece = 0; espece < NOMBRE_ESPECES; espece++) { 
+                    if (Ecosysteme[x][y].tetesFaunesLocales[espece] != NULL) { indicateurVie = 1; }
+                }
                 actualiserLieu(&Ecosysteme[x][y]);
                 
             }
@@ -123,13 +122,15 @@ void afficherEcosysteme(lieu Ecosysteme[TAILLE][TAILLE]) {
 
    for (int x = 0; x < TAILLE; x++) {
         for (int y = 0; y < TAILLE; y++) {
-            animal* courant = Ecosysteme[x][y].teteFauneLocale;
-            if (courant == NULL) { printf("-"); }
-            while (courant != NULL) {
-                printf("%c", courant->type);
-                courant = courant->suivant;
+            for (int espece = 0; espece < NOMBRE_ESPECES; espece++) {
+                animal* courant = Ecosysteme[x][y].tetesFaunesLocales[espece];
+                if (courant == NULL) { printf("-"); }
+                while (courant != NULL) {
+                    printf("%c", courant->forme);
+                    courant = courant->suivant;
+                }
+                printf("\t\t\t");
             }
-            printf("\t\t\t");
         }
         printf("\n");
     }

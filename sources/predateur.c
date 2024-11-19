@@ -1,4 +1,5 @@
 #include ".././headers/animal.h"
+#include ".././headers/proie.h"
 #include ".././headers/predateur.h"
 
 #include <stdlib.h>
@@ -17,7 +18,7 @@ predateur* predateur_create() {
 
     Predateur->base = *animal_create(); // On déréférence l'animal résultant, qui possède déjà une énergie.
     
-    Predateur->base.type = 'O';
+    Predateur->base.typeID = ANIMAL_TYPE_PREDATEUR;
 
     Predateur->base.metabolisme = d_energie_predateur;
 
@@ -41,20 +42,21 @@ void predateur_destroy(predateur** adressePredateur) {
     }
 }
 
-int devoreProie(predateur *self) { // PROBLEME : NE DEVORE PAS UNE PROIE EN PARTICULIER
+proie* predateurChasseProie(predateur* self, proie* victime) {
     /*
-    En fonction de son appétit, renvoie 1 si le predateur devore une proie, 0 sinon.
-
-    Avertissement : La fonction ne regarde pas si une proie est disponible !
+    En fonction de son appétit, chasse une proie et renvoie la nouvelle valeur de teteFauneLocale[ANIMAL_TYPE_PROIE].
     */
+
+    if (victime == NULL) { return NULL; }
 
     float random_value = (float)rand() / RAND_MAX;
     
-    if (random_value < self->appetit) {
-        self->base.energie++;
-        return 1;
-    } else {
-        self->base.depenseEnergie((animal*)self);
+    if (random_value < self->appetit) { // Succès de la chasse
+        self->base.energie += victime->base.energie; 
+        return victime->base.suivant;
+    } else { // Echec de la chasse
+        self->base.depenseEnergie((animal*)self); 
+        return victime;
     }
     return 0;
 }

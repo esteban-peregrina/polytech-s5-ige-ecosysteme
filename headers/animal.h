@@ -4,10 +4,15 @@
 // Constantes globales
 #define ENERGIE 10 
 #define ASSURANCE 0.5 
+#define NOMBRE_ESPECES 2
+
+#define ANIMAL_TYPE_PROIE 0
+#define ANIMAL_TYPE_PREDATEUR 1
 
 typedef struct animal animal;
 struct animal {
-    char type; // "*" pour une proie, "•" pour un prédateur
+    int typeID;
+    char forme;
 
     int energie;
     int metabolisme; // Energie consommée par mouvement (d)
@@ -20,6 +25,7 @@ struct animal {
     double assurance; // Probabilité de changer de direction (p_ch_dir)
     void (*changeDirection)(animal* self);
     int aMigre; // Booleen
+    int estAccouple; // Booleen
 
     animal* suivant;
 };

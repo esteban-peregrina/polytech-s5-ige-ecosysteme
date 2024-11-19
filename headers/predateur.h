@@ -20,5 +20,6 @@ void predateur_destroy(predateur** adressePredateur);
 
 // Méthodes
 int devoreProie(predateur* self); // Renvoie 1 si une proie est dévorée, 0 sinon
+proie* predateurChasseProie(predateur* self, proie* victime);
 
 #endif // PREDATEUR_H
