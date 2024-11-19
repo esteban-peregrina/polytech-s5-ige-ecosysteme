@@ -53,8 +53,10 @@ proie* predateurChasseProie(predateur* self, proie* victime) {
     float random_value = (float)rand() / RAND_MAX;
     
     if (random_value < self->appetit) { // Succès de la chasse
-        self->base.energie += victime->base.energie; 
-        return (proie*)victime->base.suivant;
+        self->base.energie += victime->base.energie;
+        proie* temp = (proie*)victime->base.suivant;
+        proie_destroy(victime);
+        return temp;
     } else { // Echec de la chasse
         self->base.depenseEnergie((animal*)self); 
         return victime;
