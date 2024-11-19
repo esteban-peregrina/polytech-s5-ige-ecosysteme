@@ -11,7 +11,7 @@ animal* animal_create() {
     */
 
     animal* Animal = NULL;
-    Animal = malloc(sizeof(animal)); // Si on déréférence le pinteur Animal avec *Animal, on aurait sizeof(NULL) (Corriger les exercices précédents !)
+    Animal = malloc(sizeof(animal)); // Si on déréférence le pointeur Animal avec *Animal, on aurait sizeof(NULL) (Corriger les exercices précédents !)
     if (Animal == NULL) { exit(EXIT_FAILURE); }
     
     Animal->energie = ENERGIE;
@@ -26,7 +26,7 @@ animal* animal_create() {
     return Animal;
 }
 
-void animal_destroy(animal* Animal) { // PAS A JOUR (adresseAnimal)
+void animal_destroy(animal* Animal) {
     /*
     Détruit l'animal.
     */

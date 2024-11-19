@@ -8,18 +8,16 @@
 #include <math.h> 
 #include <time.h>
 
-animal* ajouteAnimalFauneLocale(char type, animal* teteFauneLocale) {
+animal* ajouteAnimalFauneLocale(int type, animal* teteFauneLocale) {
     /*
-    En fonction de type, insère une proie ou un prédateur en tete de la faune locale du lieu.
-    
-    Avertissement : Le nombre d'animaux (proies ou prédateurs) du lieu n'est pas incrémenté ici.
+    En fonction de type, insère une proie ou un prédateur en tete de la faune locale du lieu et renvoie la nouvelle tete.
     */
 
-    if (type == '*') { // Proie
+    if (type == ANIMAL_TYPE_PROIE) {
         proie* Proie = proie_create();
         Proie->base.suivant = teteFauneLocale;
         return (animal*)(Proie);
-    } else { // Prédateur
+    } else  { // if (type == ANIMAL_TYPE_PREDATEUR) 
         predateur* Predateur = predateur_create();
         Predateur->base.suivant = teteFauneLocale;
         return (animal*)(Predateur);
@@ -36,7 +34,7 @@ animal* accouplementAnimal(animal* pere, animal* mere, animal* teteFauneLocale) 
     
     if (random_value < pere->fertilite) { // Père ok
         pere->depenseEnergie(pere);
-        float random_value = (float)rand() / RAND_MAX;
+        random_value = (float)rand() / RAND_MAX;
         if (random_value < mere->fertilite) { // Mère ok
             mere->depenseEnergie(mere);
 
@@ -78,37 +76,37 @@ void actualiserLieu(lieu* Lieu) {
     */
 
     // Application des décès par fatigue, dénombrement des décès par chasse, dénombrement des naissances, met à jour la trajectoire des animaux
-    for (int espece; espece < NOMBRE_ESPECES; espece++) {
+    for (int espece = 0; espece < NOMBRE_ESPECES; espece++) {
         animal* courant = Lieu->tetesFaunesLocales[espece];
-        if (courant == NULL) { return; } // Faune locale vide, rien à faire dans ce lieu
+        if (courant != NULL) { // Faune locale non vide
+            animal* precedent = NULL; 
+            while (courant != NULL) { // Parcour de la faune associée à l'espèce
+                depenseEnergieAnimal(courant);
+                if (courant->energie <= 0) { // L'animal meurt de fatigue
+                    animal* temp = courant->suivant;
+                    if (courant == Lieu->tetesFaunesLocales[espece]) { Lieu->tetesFaunesLocales[espece] = temp; }
+                    supprimeAnimalFauneLocale(courant, precedent); 
+                    courant = temp;
+                } else { // L'animal reste en vie
+                    changeDirectionAnimal(courant); // On met a jour sa trajectoire
 
-        animal* precedent = NULL; 
-        while (courant != NULL) { // Parcour de la faune associée à l'espèce
-            depenseEnergieAnimal(courant);
-            if (courant->energie <= 0) { // L'animal meurt de fatigue
-                animal* temp = courant->suivant;
-                if (courant == Lieu->tetesFaunesLocales[espece]) { Lieu->tetesFaunesLocales[espece] = temp; }
-                supprimeAnimalFauneLocale(courant, precedent); 
-                courant = temp;
-            } else { // L'animal reste en vie
-                changeDirectionAnimal(courant); // On met a jour sa trajectoire
+                    // Évènements d'espèce
+                    if (espece == ANIMAL_TYPE_PROIE) {
+                        // Rien à faire (pour le moment ?)
+                    } else if (espece == ANIMAL_TYPE_PREDATEUR) {
+                        Lieu->tetesFaunesLocales[ANIMAL_TYPE_PROIE] = (animal*)predateurChasseProie((predateur*)courant, (proie*)Lieu->tetesFaunesLocales[ANIMAL_TYPE_PROIE]); // Cast de proie inutile mais sert à la lisibilité.
+                    }
 
-                // Évènements d'espèce
-                if (espece == ANIMAL_TYPE_PROIE) {
-                    // Rien à faire (pour le moment ?)
-                } else if (espece == ANIMAL_TYPE_PREDATEUR) {
-                    Lieu->tetesFaunesLocales[ANIMAL_TYPE_PROIE] = predateurChasseProie((predateur*)courant, (proie*)Lieu->tetesFaunesLocales[ANIMAL_TYPE_PROIE]); // Cast de proie inutile mais sert à la lisibilité.
+                    // Naissances génériques
+                    if ( (precedent != NULL) ) {
+                        Lieu->tetesFaunesLocales[espece] = accouplementAnimal(precedent, courant, Lieu->tetesFaunesLocales[espece]);
+                    }
+
+                    // Continuer le parcours
+                    precedent = courant;
+                    courant = courant->suivant;
                 }
-
-                // Naissances génériques
-                if ( (precedent != NULL) ) {
-                    Lieu->tetesFaunesLocales[espece] = accouplementAnimal(precedent, courant, Lieu->tetesFaunesLocales[espece]);
-                }
-
-                // Continuer le parcours
-                precedent = courant;
-                courant = courant->suivant;
-            }
-        } 
+            } 
+        }
     }
 }

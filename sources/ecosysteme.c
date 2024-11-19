@@ -21,61 +21,57 @@ void peupleEcosysteme(lieu Ecosysteme[TAILLE][TAILLE]) {
         for (int y = 0; y < TAILLE; y++) {
             for (int espece = 0; espece < NOMBRE_ESPECES; espece++) {
                 Ecosysteme[x][y].tetesFaunesLocales[espece] = NULL;
-            }
-            int population = rand()%BASEPOPULATIONMAX;
-            for (int i = 0; i < population; i++) {
-                float random_value = (float)rand() / RAND_MAX;
-                if (random_value <= p_predateur) { // Prédateur
-                    Ecosysteme[x][y].tetesFaunesLocales[1] = ajouteAnimalFauneLocale('O', Ecosysteme[x][y].tetesFaunesLocales);
-                } else { // Proie
-                    Ecosysteme[x][y].tetesFaunesLocales[0] = ajouteAnimalFauneLocale('*', Ecosysteme[x][y].tetesFaunesLocales);
+                for (int i = 0; i < (rand()%BASEPOPULATIONMAX)/2; i++) {
+                    Ecosysteme[x][y].tetesFaunesLocales[espece] = ajouteAnimalFauneLocale(espece, Ecosysteme[x][y].tetesFaunesLocales[espece]);
                 }
             }
         }
     }
 }
 
-void migrationAnimal(lieu Ecosysteme[TAILLE][TAILLE], int x, int y) {  // PAS TERMINE
+void migrationAnimal(lieu Ecosysteme[TAILLE][TAILLE], int x, int y) {
     /*
     Migre Animal vers le prochain lieu.
     */
-    
-    animal* courant = Ecosysteme[x][y].teteFauneLocale;
-    if (courant == NULL) { return; } // Faune locale vide, rien à faire dans ce lieu 
-    
-    animal* precedent = NULL;
-    while (courant != NULL) {
-        if (!(courant->aMigre)) {
-            courant->aMigre = 1;
 
-            int xNew = x;
-            int yNew = y;
-            
-            if (courant->direction == 0) { // Haut
-                yNew = (y == 0) ? y + 1 : y - 1;
-            } else if (courant->direction == 1) { // Droite
-                xNew = (x == TAILLE - 1) ? x - 1 : x + 1;
-            } else if (courant->direction == 2) { // Bas
-                yNew = (y == TAILLE - 1) ? y - 1 : y + 1;
-            } else { // Gauche
-                xNew = (x == 0) ? x + 1 : x - 1;
-            }
-            courant->changeDirection(courant);
-            
-            animal* teteFauneLocaleNouveauLieu = Ecosysteme[xNew][yNew].teteFauneLocale;
-            
-            if (precedent == NULL) { 
-                Ecosysteme[x][y].teteFauneLocale = courant->suivant; 
-            } else {
-                precedent->suivant = courant->suivant;
-            }
-            courant->suivant = teteFauneLocaleNouveauLieu;
-            Ecosysteme[xNew][yNew].teteFauneLocale = courant;
+    for (int espece = 0; espece < NOMBRE_ESPECES; espece++) {
+        animal* courant = Ecosysteme[x][y].tetesFaunesLocales[espece];
+        if (courant != NULL) { // Faune locale associée à l'espèce non vide
+            animal* precedent = NULL;
+            while (courant != NULL) {
+                if (!(courant->aMigre)) {
+                    courant->aMigre = 1;
 
-            courant = (precedent == NULL) ? Ecosysteme[x][y].teteFauneLocale : precedent->suivant; 
-        } else {
-            precedent = courant;
-            courant = courant->suivant;
+                    int xNew = x;
+                    int yNew = y;
+                    
+                    if (courant->direction == 0) { // Haut
+                        yNew = (y == 0) ? y + 1 : y - 1;
+                    } else if (courant->direction == 1) { // Droite
+                        xNew = (x == TAILLE - 1) ? x - 1 : x + 1;
+                    } else if (courant->direction == 2) { // Bas
+                        yNew = (y == TAILLE - 1) ? y - 1 : y + 1;
+                    } else { // Gauche
+                        xNew = (x == 0) ? x + 1 : x - 1;
+                    }
+                    courant->changeDirection(courant);
+                    
+                    animal* teteFauneLocaleEspeceNouveauLieu = Ecosysteme[xNew][yNew].tetesFaunesLocales[espece];
+                    
+                    if (precedent == NULL) { 
+                        Ecosysteme[x][y].tetesFaunesLocales[espece] = courant->suivant; 
+                    } else {
+                        precedent->suivant = courant->suivant;
+                    }
+                    courant->suivant = teteFauneLocaleEspeceNouveauLieu;
+                    Ecosysteme[xNew][yNew].tetesFaunesLocales[espece] = courant;
+
+                    courant = (precedent == NULL) ? Ecosysteme[x][y].tetesFaunesLocales[espece] : precedent->suivant; 
+                } else {
+                    precedent = courant;
+                    courant = courant->suivant;
+                }
+            }
         }
     }
 }    
@@ -97,7 +93,7 @@ void actualiserEcosysteme(lieu Ecosysteme[TAILLE][TAILLE]) {
                 for (int espece = 0; espece < NOMBRE_ESPECES; espece++) { 
                     if (Ecosysteme[x][y].tetesFaunesLocales[espece] != NULL) { indicateurVie = 1; }
                 }
-                actualiserLieu(&Ecosysteme[x][y]);
+                actualiserLieu(&Ecosysteme[x][y]); // Prend l'adresse du lieu
                 
             }
         }
@@ -105,7 +101,7 @@ void actualiserEcosysteme(lieu Ecosysteme[TAILLE][TAILLE]) {
         // Pour chaque lieu de l'ecosysteme, effectue les migrations de sa faune locale.
         for (int x = 0; x < TAILLE; x++) {
             for (int y = 0; y < TAILLE; y++) {
-                migrationAnimal(Ecosysteme, x, y);
+                migrationAnimal(Ecosysteme, x, y); // Prend l'adresse de l'ecosysteme
             }
         }
         usleep(PERIOD);

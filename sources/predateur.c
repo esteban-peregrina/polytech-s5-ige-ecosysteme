@@ -19,6 +19,7 @@ predateur* predateur_create() {
     Predateur->base = *animal_create(); // On déréférence l'animal résultant, qui possède déjà une énergie.
     
     Predateur->base.typeID = ANIMAL_TYPE_PREDATEUR;
+    Predateur->base.forme = 'O';
 
     Predateur->base.metabolisme = d_energie_predateur;
 
@@ -53,7 +54,7 @@ proie* predateurChasseProie(predateur* self, proie* victime) {
     
     if (random_value < self->appetit) { // Succès de la chasse
         self->base.energie += victime->base.energie; 
-        return victime->base.suivant;
+        return (proie*)victime->base.suivant;
     } else { // Echec de la chasse
         self->base.depenseEnergie((animal*)self); 
         return victime;
