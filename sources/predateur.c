@@ -19,7 +19,7 @@ predateur* predateur_create() {
     Predateur->base = *animal_create(); // On déréférence l'animal résultant, qui possède déjà une énergie.
     
     Predateur->base.typeID = ANIMAL_TYPE_PREDATEUR;
-    Predateur->base.forme = 'O';
+    Predateur->base.forme = 'X';
 
     Predateur->base.metabolisme = d_energie_predateur;
 

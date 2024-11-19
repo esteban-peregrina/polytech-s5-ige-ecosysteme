@@ -17,8 +17,6 @@ animal* animal_create() {
     Animal->energie = ENERGIE;
     Animal->depenseEnergie = depenseEnergieAnimal;
 
-    Animal->donneNaissance = donneNaissanceAnimal;
-
     Animal->assurance = ASSURANCE;
     Animal->changeDirection = changeDirectionAnimal;
     Animal->aMigre = 0;
@@ -41,23 +39,6 @@ void depenseEnergieAnimal(animal* self) {
     */
 
     self->energie -= self->metabolisme; 
-}
-
-int donneNaissanceAnimal(animal* self) {
-    /*
-    En fonction de son sa fertilite, renvoie 1 si l'animal donne naissance, 0 sinon.
-
-    Avertissement : La fonction ne regarde pas si un couple existe !
-    */
-
-    srand(time(NULL));
-    float random_value = (float)rand() / RAND_MAX;
-    
-    if (random_value < self->fertilite) {
-        self->depenseEnergie(self);
-        return 1;
-    }
-    return 0;
 }
 
 void changeDirectionAnimal(animal* self) {

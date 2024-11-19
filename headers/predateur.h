@@ -6,10 +6,10 @@
 #define p_manger 0.8
 
 typedef struct predateur {
-    animal base; // Héritage
+    animal base;                                // Héritage
 
-    double appetit; // Attribut spécifique à cette classe, ignoré en cas de conversion explicite (p_manger)
-    int (*devore)(struct predateur* self); // Méthode spécifique, ignorée en cas de conversion explicite
+    double appetit;                             // Attribut spécifique à cette classe  (p_manger), ignoré en cas de conversion explicite
+    int (*devore)(struct predateur* self);      // Méthode spécifique, ignorée en cas de conversion explicite
 
 } predateur;
 
@@ -18,8 +18,7 @@ predateur* predateur_create();
 // Destructeur
 void predateur_destroy(predateur** adressePredateur);
 
-// Méthodes
-int devoreProie(predateur* self); // Renvoie 1 si une proie est dévorée, 0 sinon
+// Méthodes                             
 proie* predateurChasseProie(predateur* self, proie* victime);
 
 #endif // PREDATEUR_H

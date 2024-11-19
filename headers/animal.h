@@ -8,24 +8,30 @@
 
 #define ANIMAL_TYPE_PROIE 0
 #define ANIMAL_TYPE_PREDATEUR 1
+#define ANIMALE_TYPE_MONTYPE 2
+
+#define ANIMAL_DIRECTION_HAUT 0
+#define ANIMAL_DIRECTION_DROITE 1
+#define ANIMAL_DIRECTION_BAS 2
+#define ANIMAL_DIRECTION_GAUCHE 3
 
 typedef struct animal animal;
 struct animal {
-    int typeID;
-    char forme;
+    int typeID;                                 // Voir defines
+    char forme;                                 // Caractère affiché pour représenter l'animal
 
-    int energie;
-    int metabolisme; // Energie consommée par mouvement (d)
-    void (*depenseEnergie)(animal* self); // Pointeur de fonction, parenthèses pour distinguer d'une déclaration
+    int energie;                                // Energie de départ
+    int metabolisme;                            // Energie consommée par mouvement (d)
+    void (*depenseEnergie)(animal* self);       // Pointeur de fonction, parenthèses pour distinguer d'une déclaration
 
-    double fertilite; // Probabilité de se reproduire (p_reproduce)
-    int (*donneNaissance)(animal* self);
+    double fertilite;                           // Probabilité de se reproduire (p_reproduce)
+    //animal* (*accouplementAnimal)(animal* pere, animal* mere, animal* teteFauneLocale);
 
-    int direction; // 0 = Haut, 1 = Droite, 2 = Bas, 3 = Gauche
-    double assurance; // Probabilité de changer de direction (p_ch_dir)
+    int direction;                              // Voir defines
+    double assurance;                           // Probabilité de changer de direction (p_ch_dir)
     void (*changeDirection)(animal* self);
-    int aMigre; // Booleen
-    int estAccouple; // Booleen
+    int aMigre;                                 // Booleen
+    int estAccouple;                            // Booleen
 
     animal* suivant;
 };
@@ -36,8 +42,7 @@ animal* animal_create();
 void animal_destroy(animal* Animal);
 
 // Prototype de fonctions "méthodes"
-void depenseEnergieAnimal(animal* self); // Exemple d'une fonction générique qui serait écrasée par les méthodes des héritiés.
-int donneNaissanceAnimal(animal* self);
+void depenseEnergieAnimal(animal* self);        // Exemple d'une fonction générique qui serait écrasée par les méthodes des héritiés.
 void changeDirectionAnimal(animal* self);
 
 #endif // ANIMAL_H
