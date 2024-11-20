@@ -38,7 +38,7 @@ $(TARGET): $(OBJS)
 
 # Supprime les fichiers compilés
 clean:
-	rm -r -f $(OBJ_DIR) $(BIN_DIR)
+	rm -r -f $(OBJ_DIR)/* $(BIN_DIR)/*
 	@echo "Nettoyage terminé."
 
 # Recompile
