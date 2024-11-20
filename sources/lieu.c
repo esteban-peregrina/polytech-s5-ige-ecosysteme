@@ -29,28 +29,37 @@ animal* accouplementAnimal(animal* pere, animal* mere, animal* teteFauneLocale) 
     En fonction de la fertilite des parents, fait naitre un animal et renvoie la nouvelle valeur de teteFauneLocale[espece].
     */
 
-    srand(time(NULL));
-    float random_value = (float)rand() / RAND_MAX;
-    
-    if (random_value < pere->fertilite) { // Père ok
-        pere->depenseEnergie(pere);
-        random_value = (float)rand() / RAND_MAX;
-        if (random_value < mere->fertilite) { // Mère ok
-            mere->depenseEnergie(mere);
+    if (pere->estAccouple || mere->estAccouple) { 
+        return teteFauneLocale; 
+    } else {
+        srand(time(NULL));
+        float random_value = (float)rand() / RAND_MAX;
+        
+        if (random_value < pere->fertilite) { // Père ok
+            pere->depenseEnergie(pere);
+            random_value = (float)rand() / RAND_MAX;
+            if (random_value < mere->fertilite) { // Mère ok
+                mere->depenseEnergie(mere);
 
-            if (pere->typeID == ANIMAL_TYPE_PROIE) { 
-                proie* Proie = proie_create();
-                Proie->base.suivant = teteFauneLocale;
-                return (animal*)(Proie);
-            } else if (pere->typeID == ANIMAL_TYPE_PREDATEUR) { 
-                predateur* Predateur = predateur_create();
-                Predateur->base.suivant = teteFauneLocale;
-                return (animal*)(Predateur);
+                pere->estAccouple = 1;
+                mere->estAccouple = 1;
+                
+                if (pere->typeID == ANIMAL_TYPE_PROIE) { 
+                    proie* Proie = proie_create();
+                    Proie->base.suivant = teteFauneLocale;
+                    return (animal*)(Proie);
+                } else if (pere->typeID == ANIMAL_TYPE_PREDATEUR) { 
+                    predateur* Predateur = predateur_create();
+                    Predateur->base.suivant = teteFauneLocale;
+                    return (animal*)(Predateur);
+                }
+
             }
-
         }
+        return teteFauneLocale;
     }
-    return teteFauneLocale;
+
+   
     
 }
 
