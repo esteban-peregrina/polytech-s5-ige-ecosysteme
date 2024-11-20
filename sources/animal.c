@@ -20,6 +20,7 @@ animal* animal_create() {
     Animal->assurance = ASSURANCE;
     Animal->changeDirection = changeDirectionAnimal;
     Animal->aMigre = 0;
+    Animal->estAccouple = 0;
 
     return Animal;
 }
@@ -38,7 +39,7 @@ void depenseEnergieAnimal(animal* self) {
     Dépense l'énergie de l'animal en fonction de son métabolisme.
     */
 
-    self->energie -= self->metabolisme; 
+    self->energie -= self->metabolisme;
 }
 
 void changeDirectionAnimal(animal* self) {
