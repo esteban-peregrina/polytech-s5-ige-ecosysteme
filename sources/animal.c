@@ -40,6 +40,7 @@ void depenseEnergieAnimal(animal* self) {
     */
 
     self->energie -= self->metabolisme;
+    self->estAccouple = 0;
 }
 
 void changeDirectionAnimal(animal* self) {
