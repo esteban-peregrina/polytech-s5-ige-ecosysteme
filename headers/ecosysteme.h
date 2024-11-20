@@ -3,7 +3,7 @@
 
 #define TAILLE 10
 #define PERIOD 1000000
-#define BASEPOPULATIONMAX 10
+#define BASEPOPULATIONMAX 5
 #define p_predateur 0.4
 
 #define REPARTITION 3

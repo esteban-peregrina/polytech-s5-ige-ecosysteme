@@ -23,7 +23,7 @@ void peupleEcosysteme(lieu Ecosysteme[TAILLE][TAILLE]) {
             for (int y = 0; y < TAILLE; y++) {
                 for (int espece = 0; espece < NOMBRE_ESPECES; espece++) {
                     Ecosysteme[x][y].tetesFaunesLocales[espece] = NULL;
-                    if (x == 0 && y == 0) { // Apparaissent au même endroit
+                    if (x == 0 && y == 0) { // Apparaissent au même endroit, mettre TAILLE à 2
                         Ecosysteme[x][y].tetesFaunesLocales[espece] = ajouteAnimalFauneLocale(espece, Ecosysteme[x][y].tetesFaunesLocales[espece]);
                     }
                 }
@@ -47,16 +47,16 @@ void peupleEcosysteme(lieu Ecosysteme[TAILLE][TAILLE]) {
         }
         break;
 
-    case 3:
+    case 3: // Le plus sympa
         for (int x = 0; x < TAILLE; x++) {
             for (int y = 0; y < TAILLE; y++) {
                 for (int espece = 0; espece < NOMBRE_ESPECES; espece++) {
                     Ecosysteme[x][y].tetesFaunesLocales[espece] = NULL;
-                    if ((espece == ANIMAL_TYPE_PROIE) && ((x != TAILLE-1) || (y != TAILLE-1))) { // Proie partout sauf en bas à droite
-                        Ecosysteme[x][y].tetesFaunesLocales[espece] = ajouteAnimalFauneLocale(espece, Ecosysteme[x][y].tetesFaunesLocales[espece]);
+                    if ((espece == ANIMAL_TYPE_PROIE) && ((x != TAILLE/2) || (y != TAILLE/2))) { // 2 proies partout sauf au centre
+                        for (int i = 0; i < 2; i++) { Ecosysteme[x][y].tetesFaunesLocales[espece] = ajouteAnimalFauneLocale(espece, Ecosysteme[x][y].tetesFaunesLocales[espece]); }  
                     }
-                    if (espece == ANIMAL_TYPE_PREDATEUR && x == TAILLE-1 && y == TAILLE-1) { // Predateur en bas à droite
-                        Ecosysteme[x][y].tetesFaunesLocales[espece] = ajouteAnimalFauneLocale(espece, Ecosysteme[x][y].tetesFaunesLocales[espece]);
+                    if (espece == ANIMAL_TYPE_PREDATEUR && x == TAILLE/2 && y == TAILLE/2) { // 3 predateurs au centre
+                        for (int i = 0; i < 3; i++) { Ecosysteme[x][y].tetesFaunesLocales[espece] = ajouteAnimalFauneLocale(espece, Ecosysteme[x][y].tetesFaunesLocales[espece]); }  
                     }
                 }
             }

@@ -3,7 +3,7 @@
 
 #define d_energie_predateur 2
 #define p_reproduction_predateur 0.5
-#define p_manger 0.8
+#define p_manger 0.9
 
 typedef struct predateur {
     animal base;                                // Héritage
